@@ -1,0 +1,113 @@
+<html>
+    <head>
+        <script src="jquery-3.6.1.min.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.min.css"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.jquery.min.js"></script>
+      
+       
+        <script>
+
+             $(document).ajaxStart(function(){
+                    $("#btn1").html("please Wait...");
+                    $("#btn1").attr("disabled","true");
+                });
+                $(document).ready(function(){
+                  $("#fromcurrency").chosen();
+                   $("#tocurrency").chosen();
+                    $("#btn1").click(function(){
+                        var amt =$("#amount").val();
+                        var fromcur = $("#fromcurrency").val()
+                        var tocur = $("#tocurrency").val();
+                        alert("hi");
+
+                    $.ajax({
+                        url:"https://api.apilayer.com/fixer/convert",
+                        type:"get",
+                        headers:{"apikey":"ATKsOgx53tBD12HKeLvky2ftYMiixTO6"},//"w140oUfYUUGJsUrPb9oQEZxDHlEidqsF"},
+                        data:{amount:amt,from:fromcur,to:tocur},
+                        success:function(res){
+                           // alert(res);
+                           console.log(res.result);
+                            $("#para1").html(res.result);
+                        },
+                        error:function(){
+                            alert("Something went wrong");
+                        }
+                        
+                    })
+                })
+            });
+            $(document).ajaxComplete(function(){
+                $("#btn1").html("Convert");
+                $("#btn1").removeAttr("disabled");
+            });
+            
+        </script>
+    </head>
+    <style>
+        .box{
+            width:500px;
+            padding:20px;
+            box-shadow:0px 0px 5px gray;
+            border-radius:20px;
+            float:left;
+            height:150px;
+            margin:10px;
+        }
+        body{
+            background-color:bisque;
+
+        }
+        #amount{
+            border-color: blue;
+
+            border-width:5px;
+        }
+         #fromcurrency{
+            border-color:blue;
+            border-width: 5px;
+            width:120px;
+         }
+         #tocurrency{
+            border-color:blue;
+            border-width:5px;
+         }
+         #btn1{
+            border-color: green;
+            border-width: 5px;
+         }
+
+
+
+    </style>
+    <body>
+        Enter Amount
+        <input type="text" id="amount"/>
+        <br/><br/>
+
+        Select Currency(convert from)
+        <select id="fromcurrency">
+            <option value="USD">United States</option>
+            <option>EUR</option>
+          
+        </select>
+        <br/><br/>
+
+        Select Currency(convert to)
+        <select id="tocurrency">
+            <option value="INR">Indian Rupees</option>
+            <option>AUD</option>
+
+        </select>
+        <br/><br/>
+
+        <button id="btn1">Convert</button>
+
+        <hr/>
+
+        <p id="para1"></p>
+
+
+    </body>
+</html>
